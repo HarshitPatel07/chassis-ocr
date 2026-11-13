@@ -5,27 +5,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Chassis OCR</title>
-<meta http-equiv="refresh" content="1; url=https://script.google.com/macros/s/AKfycbxhiuja_VFEaAwkIWcZH2YNS2JA4tpYc7jh1qzV6u-WCRFQlKvjDcuCrEn8koCt2ib3/exec">
 <style>
-  :root { --bg:#f5f7fa; --card:#fff; --ink:#1c2430; --mute:#6b7685; --line:#e3e7ee; --pri:#1f4e78; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#11161d; --card:#1a212b; --ink:#e6ebf1; --mute:#9aa6b4; --line:#2a3340; --pri:#5b9bd5; } }
+  :root { --bg:#f5f7fa; --bar:#1f4e78; --bar-ink:#fff; --mute:#c9d6e4; }
   * { box-sizing:border-box; }
-  body { margin:0; min-height:100vh; display:grid; place-items:center; background:var(--bg); color:var(--ink);
-         font:15px/1.5 -apple-system,Segoe UI,Roboto,sans-serif; padding:16px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:28px; max-width:420px; text-align:center; }
-  h1 { font-size:22px; margin:0 0 6px; } p { color:var(--mute); margin:0 0 18px; }
-  .spin { width:28px; height:28px; border:3px solid var(--pri); border-right-color:transparent; border-radius:50%;
-          display:inline-block; animation:sp .8s linear infinite; margin-bottom:14px; }
+  html, body { margin:0; height:100%; background:var(--bg); font:14px/1.4 -apple-system,Segoe UI,Roboto,sans-serif; }
+  .bar { height:44px; display:flex; align-items:center; justify-content:space-between; gap:12px;
+         padding:0 16px; background:var(--bar); color:var(--bar-ink); }
+  .bar b { font-size:15px; } .bar span { color:var(--mute); font-size:12px; margin-left:8px; }
+  .bar a { color:var(--bar-ink); font-size:12px; text-decoration:none; border:1px solid rgba(255,255,255,.4);
+           padding:5px 10px; border-radius:6px; white-space:nowrap; }
+  .wrap { position:relative; height:calc(100% - 44px); }
+  iframe { position:absolute; inset:0; width:100%; height:100%; border:0; background:var(--bg); }
+  .load { position:absolute; inset:0; z-index:1; display:grid; place-items:center; color:#6b7685; background:var(--bg); }
+  .spin { width:26px; height:26px; border:3px solid var(--bar); border-right-color:transparent; border-radius:50%;
+          display:block; margin:0 auto 10px; animation:sp .8s linear infinite; }
   @keyframes sp { to { transform:rotate(360deg); } }
-  a.btn { display:inline-block; background:var(--pri); color:#fff; text-decoration:none; font-weight:600; padding:10px 20px; border-radius:8px; }
+  @media (max-width:520px) { .bar span { display:none; } }
 </style>
 </head>
 <body>
-  <div class="card">
-    <div class="spin"></div>
-    <h1>Chassis OCR</h1>
-    <p>Opening the app&hellip; Photos are read by Google Drive OCR and results go to a Google Sheet.</p>
-    <a class="btn" href="https://script.google.com/macros/s/AKfycbxhiuja_VFEaAwkIWcZH2YNS2JA4tpYc7jh1qzV6u-WCRFQlKvjDcuCrEn8koCt2ib3/exec">Open Chassis OCR</a>
+  <div class="bar">
+    <div><b>Chassis OCR</b><span>ADCA &middot; vehicle sticker &rarr; chassis list</span></div>
+    <a id="newtab" target="_blank" rel="noopener">Open in new tab &#8599;</a>
   </div>
+  <div class="wrap">
+    <div class="load" id="load"><div><span class="spin"></span>Loading app&hellip;</div></div>
+    <iframe id="app" title="Chassis OCR" allow="clipboard-write"></iframe>
+  </div>
+<script>
+  // Change only this line when the Apps Script deployment URL changes.
+  var APP_URL = 'https://script.google.com/macros/s/AKfycbxhiuja_VFEaAwkIWcZH2YNS2JA4tpYc7jh1qzV6u-WCRFQlKvjDcuCrEn8koCt2ib3/exec';
+  document.getElementById('newtab').href = APP_URL;
+  var f = document.getElementById('app'), ready = false;
+  // The app sends 'chassis-ocr-ready' when it shows inside this page.
+  window.addEventListener('message', function (e) {
+    if (e.data === 'chassis-ocr-ready') { ready = true; document.getElementById('load').style.display = 'none'; }
+  });
+  // If Google blocks showing it here (older deployment), open the app directly instead of a blank page.
+  setTimeout(function () { if (!ready) location.replace(APP_URL); }, 6000);
+  f.src = APP_URL;
+</script>
 </body>
 </html>

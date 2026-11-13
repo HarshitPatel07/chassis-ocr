@@ -1,6 +1,6 @@
 # Chassis OCR
 
-Short link to the ADCA Chassis OCR web app (Google Apps Script).
-The page forwards to the app; all processing runs on Google Apps Script.
+Portal page for the ADCA Chassis OCR web app (Google Apps Script).
+The page shows the app inside itself; if Google blocks that, it opens the app directly after 6 seconds.
 
-To point it at a new deployment, change the `/exec` URL in `index.html` (2 places).
+To point it at a new deployment, change `APP_URL` in `index.html` (one line).
